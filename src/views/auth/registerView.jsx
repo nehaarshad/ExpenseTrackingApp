@@ -8,21 +8,27 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { register } from '../../services/authService';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import GradientButton from '../../components/shared/gradientButton';
 import Input from '../../components/shared/input'; 
-import MainButton from '../../components/shared/button';
+import IconButton from '../../components/shared/iconButton';
 import TextButton from '../../components/shared/textButton';
-import HeaderImage from '../../components/shared/headerImage'; 
 import { appColors } from '../../constants/colors';
 import { spacingX, spacingY } from '../../constants/scaling';
 
 const RegisterView = ({ navigation }) => {
-  const [email, setEmail] = useState(''); // Temporary for testing
-  const [password, setPassword] = useState(''); // Temporary for testing
+  const [email, setEmail] = useState(''); 
+  const [password, setPassword] = useState(''); 
+  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
 
   const validateInputs = () => {
     if (!email || !email.trim()) {
       Alert.alert('Error', 'Please enter your email');
+      return false;
+    }
+    if (!name || !name.trim()) {
+      Alert.alert('Error', 'Please enter Username');
       return false;
     }
     if (!password || !password.trim()) {
@@ -45,6 +51,7 @@ const RegisterView = ({ navigation }) => {
       setLoading(true);
       console.log('Attempting register with:', { 
         email, 
+        name,
         passwordLength: password.length 
       });
       
@@ -60,60 +67,130 @@ const RegisterView = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.innerContainer}>
-      <HeaderImage />
-      
-      <View style={styles.fieldStyle}>
-        <Input 
-          title="Email" 
-          placeholder="Enter email"
-          value={email} 
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          disabled={loading}
-        />
+    <View style={styles.container}>
+      {/* BackButton */}
+      <IconButton name="chevron-back-outline" 
+      size={spacingY._20} color={appColors.baseGreen} 
+      onPress={()=>navigation.navigate('welcome')}/>
         
-        <Input 
-          title="Password" 
-          placeholder="Enter password (min 6 chars)"
-          value={password} 
-          onChangeText={setPassword}
-          secureTextEntry={true}
-          disabled={loading}
-        /> 
-      </View>
-      
-      {loading ? (
-        <ActivityIndicator size="large" color={appColors.green} />
-      ) : (
-        <MainButton 
-          title="Sign Up" 
-          onPress={handleRegister} 
-        />
-      )}
-      
-      <View style={styles.navView}>
-        <Text>Already have an Account? </Text>
-        <TextButton 
-          text='Login' 
-          onPress={() => navigation.navigate('login')}
-        />
-      </View>
+        {/* welcomeText */}
+        
+        <View style={styles.welcomeView}>
+           <Text style={styles.welcomeText}>Let's</Text>
+           <Text style={styles.welcomeText}>Get Started</Text>
+        </View>
+
+        {/* form */}
+        <View style={styles.form}>
+          <Text style={styles.formText}>Create an account to track your expenses</Text>
+
+          {/* Text Input Fields */}
+          <View style={styles.Field}>
+
+          <Input 
+            placeholder="Enter username"
+            icon={<Ionicons name="person-outline" size={spacingY._20} color={appColors.baseGreen} />}
+            value={name} 
+            onChangeText={(value) => setName(value)}
+            autoCapitalize="none"
+            disabled={loading}
+          />
+
+          <Input 
+            placeholder="Enter email"
+            icon={<Ionicons name="at-outline" size={spacingY._20} color={appColors.baseGreen} />}
+            value={email} 
+            onChangeText={(value) => setEmail(value)}
+            autoCompleteType="email"
+            keyboardType="email-address"
+            autoCapitalize="none"
+            disabled={loading}
+          />
+          
+          <Input 
+            placeholder="Enter password"
+            icon={<Ionicons name="lock-closed-outline" size={spacingY._20} color={appColors.baseGreen} />}
+            value={password} 
+            onChangeText={(value)=> setPassword(value)}
+            secureTextEntry={true}
+            disabled={loading}
+          /> 
+          </View>
+        </View>
+
+        {/* Login Button */}
+        <View style={styles.button}>
+        {loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={appColors.baseGreen} />
+          </View>
+        ) : (
+          <GradientButton 
+            title="Sign Up" 
+            onPress={handleRegister} 
+          />
+        )}
+        </View>
+
+        {/* Navigation to Register */}
+        <View style={styles.navView}>
+          <Text style={styles.text}>Already have an account? </Text>
+          <TextButton 
+            text='login' 
+            onPress={() => navigation.navigate('login')}
+            size={spacingY._15}
+            color={appColors.baseGreen}
+            weight='bold'
+          />
+        </View>
     </View>
+    
   );
+
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: appColors.offWhite,
+    paddingHorizontal: spacingX._20,
+    paddingTop: spacingY._50,
   },
-  innerContainer: {
-    flex: 1,
+  welcomeView:{ 
+   gap:spacingY._5,
+   marginTop:spacingY._25,
   },
-  fieldStyle:{
-    marginVertical: spacingY._50
+  welcomeText:{ 
+   fontWeight:'800',
+   color:appColors.baseGreen,
+   fontSize:spacingY._30,
+   },
+   form:{
+  
+    marginTop:spacingY._7,
+    marginBottom:spacingY._70,
+   },
+  formText:{
+    fontSize:spacingY._15,
+    color:appColors.lightBaseGreen,
+    marginBottom:spacingY._15,
+    fontWeight:'500',
+    fontFamily:'inter',
+
+    }, 
+  Field:{
+    gap:spacingY._10,
+    marginTop: spacingY._20
   }, 
+  button:{
+    marginHorizontal: spacingX._20,
+  },
+  text: {
+    fontSize: spacingY._15,
+    color:appColors.black,
+    fontWeight: 'regular',
+    fontFamily:'inter',
+    textAlign: 'center',
+  },
   navView:{
     marginVertical: spacingY._20,
     marginHorizontal: spacingX._40,
@@ -125,5 +202,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
 
 export default RegisterView;

@@ -1,10 +1,11 @@
 import React from 'react';
 import { TextInput, StyleSheet,View,Text } from 'react-native';
 import { appColors } from '../../constants/colors';
-import { spacingX,spacingY } from '../../constants/scaling';
+import { radius, spacingX,spacingY } from '../../constants/scaling';
 
 const Input = ({ 
   placeholder, 
+  icon,
   value, 
   onChangeText, 
   secureTextEntry,
@@ -13,11 +14,11 @@ const Input = ({
   ...props 
 }) => {
   return (
-    <View style={styles.form}>
-      <Text style={styles.text}>{title}</Text>
+    <View style={styles.container}>
+      {icon && icon}
       <TextInput
         style={[
-          styles.textInput,
+          styles.input,
           disabled && styles.disabledInput
         ]}
         placeholder={placeholder}
@@ -32,27 +33,28 @@ const Input = ({
 };
 
 const styles = StyleSheet.create({
-  form: {
-    marginRight: spacingX._20,
-    marginLeft: spacingX._20,
-    marginBottom: spacingY._12,
-  },
-  text: {
-    marginBottom: 5,
-    fontWeight: '500',
-  },
-  textInput: {
-    fontSize: 16,
-    padding: 12,
-    borderWidth: 1,
+
+  container: {
+   flexDirection:'row',
+    alignItems:'center',
+    height:spacingY._45,
+    justifyContent:"center",
+    borderWidth:1,
     borderColor: appColors.black,
-    borderRadius: 5,
-    backgroundColor: appColors.white,
-  },
-  disabledInput: {
-    backgroundColor: appColors.lightGray,
-    opacity: 0.7,
-  },
+    borderRadius: radius._15,
+    borderCurve:"continuous",
+    paddingHorizontal:spacingX._15,
+    gap:spacingX._10,
+
+  }, 
+
+  input:{
+    flex:1,
+    height:spacingY._50,
+    fontSize:spacingY._15,
+    color:appColors.black,
+    fontWeight:'400',
+  }
 });
 
 export default Input;

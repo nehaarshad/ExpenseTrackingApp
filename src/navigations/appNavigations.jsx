@@ -4,6 +4,7 @@ import SplashView from '../views/splashView';
 import LoginView from '../views/auth/loginView';
 import RegisterView from '../views/auth/registerView';
 import HomeView from '../views/home';
+import WelcomeView from '../views/welcome';
 
 const Stack = createNativeStackNavigator();
 
@@ -12,6 +13,7 @@ export default function AppNavigator() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="splash" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="splash" component={SplashView} />
+        <Stack.Screen name="welcome" component={WelcomeView} />
         <Stack.Screen name="login" component={LoginView} />
         <Stack.Screen name="register" component={RegisterView} />
         <Stack.Screen name="home" component={HomeView} />

@@ -20,14 +20,19 @@ export const spacingY={
     _7:verticalScale(7),
     _10:verticalScale(10),
     _12:verticalScale(12),
+    _13:verticalScale(13),
     _15:verticalScale(15),
+    _18:verticalScale(18),
     _20:verticalScale(20),
     _25:verticalScale(25),
     _30:verticalScale(30),
     _35:verticalScale(35),
     _40:verticalScale(40),
+    _45:verticalScale(45),
     _50:verticalScale(50),
     _60:verticalScale(60),
+    _70:verticalScale(70),
+    _80:verticalScale(80),
 }
 
 export const radius={

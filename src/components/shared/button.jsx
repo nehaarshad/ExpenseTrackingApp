@@ -18,7 +18,7 @@ const MainButton = ({ title, onPress ,disabled}) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: appColors.green,
+    backgroundColor: appColors.baseGreen,
     borderRadius: radius._8,
     alignItems: 'center',
     justifyContent: 'center',
