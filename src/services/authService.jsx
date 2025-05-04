@@ -5,7 +5,9 @@ import {
   signOut,
   updateProfile
 } from 'firebase/auth';
-import { auth } from '../constants/firebaseConfig';
+import { doc } from 'firebase/firestore';
+import { auth ,db} from '../constants/firebaseConfig';
+import { setDoc } from 'firebase/firestore';
 
 export const login = async (email, password) => {
   try {
@@ -74,7 +76,15 @@ export const register = async (email, password, userName) => {
     if (!auth) throw new Error("Firebase Auth not initialized properly");
     
     const userCredentials = await createUserWithEmailAndPassword(auth, emailStr, passwordStr);
+    await setDoc(doc(db, 'users', userCredentials.user.uid), {
+      uid: userCredentials.user.uid,
+      email: emailStr,
+      userName: userName ? String(userName).trim() : null,
+      createdAt: new Date().toISOString(),
+    });
     const user = userCredentials.user;
+
+    // Update user profile with displayName if provided
     if (userName) {
       await updateProfile(user, { displayName: String(userName).trim() });
     }
@@ -95,12 +105,11 @@ export const register = async (email, password, userName) => {
   }
 };
 
-export const logout = async (navigation) => {
+export const logout = async () => {
   try {
     if (!auth) throw new Error("Firebase Auth not initialized properly");
     
     await signOut(auth);
-    navigation.replace('login');
   } catch (e) {
     console.error('Logout error:', e);
     throw new Error(e.message || 'Logout failed. Please try again.');

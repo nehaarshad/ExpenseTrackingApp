@@ -7,31 +7,61 @@ import {
   Alert, 
   ActivityIndicator,
 } from 'react-native';
-import { login } from '../../services/authService';
+import { useAuth } from '../../context/authContext'; 
+import Ionicons from '@expo/vector-icons/Ionicons';
+import GradientButton from '../../components/shared/gradientButton';
 import Input from '../../components/shared/input'; 
+import IconButton from '../../components/shared/iconButton';
 import TextButton from '../../components/shared/textButton';
 import { appColors } from '../../constants/colors';
 import { spacingX, spacingY } from '../../constants/scaling';
-import GradientButton from '../../components/shared/gradientButton';
-import IconButton from '../../components/shared/iconButton';
-import Ionicons from '@expo/vector-icons/Ionicons';
 
-const LoginView = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const RegisterView = ({ navigation }) => {
+  const [email, setEmail] = useState(''); 
+  const [password, setPassword] = useState(''); 
+  const [name, setName] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    console.log('Login button pressed!'); 
+  const { signUp } = useAuth(); 
+  const validateInputs = () => {
+    if (!email || !email.trim()) {
+      Alert.alert('Error', 'Please enter your email');
+      return false;
+    }
+    if (!name || !name.trim()) {
+      Alert.alert('Error', 'Please enter Username');
+      return false;
+    }
+    if (!password || !password.trim()) {
+      Alert.alert('Error', 'Please enter your password');
+      return false;
+    }
+    if (password.length < 6) {
+      Alert.alert('Error', 'Password must be at least 6 characters');
+      return false;
+    }
+    return true;
+  };
+
+  const handleRegister = async () => {
+    console.log('Register button pressed!');
+    
+    if (!validateInputs()) return;
     
     try {
       setLoading(true);
-      await login(email, password);
-      Alert.alert('Login Successful', 'Welcome back!');
+      console.log('Attempting register with:', { 
+        email, 
+        name,
+        passwordLength: password.length 
+      });
+      
+      await signUp(email, password,name);
+      Alert.alert('Registration Successful', 'Welcome!');
       navigation.navigate('home');
     } catch (error) {
-      console.error('Login view error:', error);
-      Alert.alert('Login Failed', error.message || 'An error occurred during login');
+      console.error('Registration error:', error);
+      Alert.alert('Registration Failed', error.message || 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -47,16 +77,26 @@ const LoginView = ({ navigation }) => {
         {/* welcomeText */}
         
         <View style={styles.welcomeView}>
-           <Text style={styles.welcomeText}>Hey,</Text>
-           <Text style={styles.welcomeText}>Welcome Back</Text>
+           <Text style={styles.welcomeText}>Let's</Text>
+           <Text style={styles.welcomeText}>Get Started</Text>
         </View>
 
         {/* form */}
         <View style={styles.form}>
-          <Text style={styles.formText}>Login now to track all your expenses</Text>
+          <Text style={styles.formText}>Create an account to track your expenses</Text>
 
           {/* Text Input Fields */}
           <View style={styles.Field}>
+
+          <Input 
+            placeholder="Enter username"
+            icon={<Ionicons name="person-outline" size={spacingY._20} color={appColors.baseGreen} />}
+            value={name} 
+            onChangeText={(value) => setName(value)}
+            autoCapitalize="none"
+            disabled={loading}
+          />
+
           <Input 
             placeholder="Enter email"
             icon={<Ionicons name="at-outline" size={spacingY._20} color={appColors.baseGreen} />}
@@ -76,15 +116,6 @@ const LoginView = ({ navigation }) => {
             secureTextEntry={true}
             disabled={loading}
           /> 
-          <View style={{alignItems:'flex-end'}}>
-            <TextButton 
-            text='Forgot Password?' 
-            onPress={() => navigation.navigate('welcome')}
-            size={spacingY._15}
-            color={appColors.baseGreen}
-            weight='500'
-            />
-            </View>
           </View>
         </View>
 
@@ -96,18 +127,18 @@ const LoginView = ({ navigation }) => {
           </View>
         ) : (
           <GradientButton 
-            title="Login" 
-            onPress={handleLogin} 
+            title="Sign Up" 
+            onPress={handleRegister} 
           />
         )}
         </View>
 
         {/* Navigation to Register */}
         <View style={styles.navView}>
-          <Text style={styles.text}>Don't Have Account? </Text>
+          <Text style={styles.text}>Already have an account? </Text>
           <TextButton 
-            text='SignUp' 
-            onPress={() => navigation.navigate('register')}
+            text='login' 
+            onPress={() => navigation.navigate('login')}
             size={spacingY._15}
             color={appColors.baseGreen}
             weight='bold'
@@ -116,6 +147,7 @@ const LoginView = ({ navigation }) => {
     </View>
     
   );
+
 };
 
 const styles = StyleSheet.create({
@@ -172,4 +204,5 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginView;
+
+export default RegisterView;

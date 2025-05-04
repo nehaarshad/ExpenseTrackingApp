@@ -7,16 +7,6 @@ import { spacingY } from '../constants/scaling'
 
 const SplashView = () => {
 
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigation.replace('welcome');
-    }, 4000);
-
-    return () => clearTimeout(timer);
-  }, [navigation]);
-
 
   return (
      <View style={styles.container}>

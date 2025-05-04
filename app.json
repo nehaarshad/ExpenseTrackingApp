@@ -4,7 +4,7 @@
     "slug": "ExpenseTrackingApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon":  "./src/assets/images/appLogo.png",
+    "icon": "./src/assets/images/appLogo.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -22,6 +22,9 @@
     },
     "web": {
       "favicon": "./src/assets/images/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
