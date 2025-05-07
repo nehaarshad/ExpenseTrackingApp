@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { radius, spacingX, spacingY } from '../../constants/scaling';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import HomeView from './home';
@@ -33,7 +34,7 @@ const TabsNavigation = () => {
         tabBarStyle: {
           backgroundColor: appColors.white,
           position: 'absolute',
-          height: 60,
+          height: spacingY._60,
           borderTopWidth: 0,
           elevation: 5,
         },
@@ -61,7 +62,7 @@ const TabsNavigation = () => {
           return (
             <Ionicons
               name={iconName}
-              size={route.name === 'addExpense' ? 30 : 24}
+              size={route.name === 'addExpense' ? spacingY._30 : spacingY._25}
               color={color}
             />
           );
@@ -93,16 +94,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   innerButton: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: spacingX._60,
+    height: spacingY._55,
+    borderRadius: radius._30,
     backgroundColor: appColors.baseGreen,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.15,
-    shadowRadius: 5,
+    // shadowOffset: { width: 0, height: 10 },
+  //  shadowOpacity: 0.15,
+  //  shadowRadius: 5,
     elevation: 5,
   },
 });

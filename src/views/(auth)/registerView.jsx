@@ -7,7 +7,7 @@ import {
   Alert, 
   ActivityIndicator,
 } from 'react-native';
-import { useAuth } from '../../context/authContext'; 
+import { useAuth } from '../../hooks/useAuth'; 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import GradientButton from '../../components/shared/gradientButton';
 import Input from '../../components/shared/input'; 

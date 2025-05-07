@@ -5,7 +5,7 @@ import RegisterView from '../views/(auth)/registerView';
 import HomeView from '../views/(tabs)/home';
 import WelcomeView from '../views/welcome';
 import React, { useEffect } from 'react';
-import { useAuth } from '../context/authContext';
+import { useAuth } from '../hooks/useAuth';
 import { ActivityIndicator, View } from 'react-native';
 import TabsNavigation from '../views/(tabs)/_layouts';
 

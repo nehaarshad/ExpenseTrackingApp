@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { login } from '../../services/authService';
-import { useAuth } from '../../context/authContext'; 
+import { useAuth } from '../../hooks/useAuth'; 
 import Input from '../../components/shared/input'; 
 import TextButton from '../../components/shared/textButton';
 import { appColors } from '../../constants/colors';
