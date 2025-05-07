@@ -1,6 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-import SplashView from '../views/splashView';
 import LoginView from '../views/(auth)/loginView';
 import RegisterView from '../views/(auth)/registerView';
 import HomeView from '../views/(tabs)/home';
@@ -8,6 +7,7 @@ import WelcomeView from '../views/welcome';
 import React, { useEffect } from 'react';
 import { useAuth } from '../context/authContext';
 import { ActivityIndicator, View } from 'react-native';
+import TabsNavigation from '../views/(tabs)/_layouts';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +28,7 @@ const AppNavigator = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {user ? (
           // User is signed in
-          <Stack.Screen name="home" component={HomeView} />
+          <Stack.Screen name="tabs" component={TabsNavigation} />
         ) : (
           // No user is signed in
           <>

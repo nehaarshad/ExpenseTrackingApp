@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const statistics = () => {
+const AnalyticsView = () => {
   return (
     <View>
       <Text>statistics</Text>
@@ -9,6 +9,6 @@ const statistics = () => {
   )
 }
 
-export default statistics
+export default AnalyticsView
 
 const styles = StyleSheet.create({})
