@@ -30,7 +30,7 @@ const LoginView = ({ navigation }) => {
       setLoading(true);
       await signIn(email, password);
       Alert.alert('Login Successful', 'Welcome back!');
-      navigation.navigate('home');
+    //  navigation.navigate('home');
     } catch (error) {
       console.error('Login view error:', error);
       Alert.alert('Login Failed', error.message || 'An error occurred during login');

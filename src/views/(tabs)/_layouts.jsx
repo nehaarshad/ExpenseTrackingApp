@@ -10,6 +10,7 @@ import Wallets from './myWallet';
 import AnalyticsView from './statistics';
 import AddExpenseView from './addExpense';
 import { appColors } from '../../constants/colors';
+import ProfileNavigator from '../../navigations/nestedNavigations';
 
 const Tab = createBottomTabNavigator();
 
@@ -82,7 +83,7 @@ const TabsNavigation = () => {
         }}
       />
       <Tab.Screen name="wallets" component={Wallets} />
-      <Tab.Screen name="profile" component={ProfileView} />
+      <Tab.Screen name="profile" component={ProfileNavigator} />
     </Tab.Navigator>
   );
 };

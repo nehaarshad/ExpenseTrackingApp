@@ -1,19 +1,54 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text,Alert, View } from 'react-native'
 import { radius, spacingX, spacingY } from '../../constants/scaling'
 import { appColors } from '../../constants/colors'
+import { useNavigation } from '@react-navigation/native'
 import HeaderImage from '../../components/shared/headerImage'
 import { useAuth } from '../../hooks/useAuth'
-import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
+import Ionicons from '@expo/vector-icons/Ionicons'
+import ListTab from '../../components/shared/listTab'
+import { verticalScale } from 'react-native-size-matters'
+import { signOut } from '../../hooks/useAuth'
 
-const ProfileView = () => {
+const ProfileView = ({navigation}) => {
 
+  const {signOut}=useAuth();
+  const handleLogout=async()=> {
+    console.log('User logged out');
+    await signOut();
+ Alert.alert('You Logged Out Successfully');
+    console.log('User logged out');
+  }
+ // const navigation = useNavigation();
   const {user}=useAuth();
   return (
     <View style={{flex: 1}}>
+      {/*header */}
+    <View >
       <HeaderImage  title="Profile"></HeaderImage> 
-       <Ionicons name="chevron-back" size={24} color="black" style={{position:'absolute', top:spacingY._50, left:spacingX._20}}/>
     </View>
+
+    {/* user info */}
+      <View style={styles.userInfo}>
+        {/* picture */}
+          <View style={styles.avatar}>
+            <Ionicons name='person' size={spacingY._50} color={appColors.white}/>
+        </View>
+        {/* info */}
+        <View style={styles.nameContainer}>
+          <Text style={styles.name}>{user?.displayName}</Text>
+          <Text style={styles.email}>{user?.email}</Text>
+        </View>
+      </View>
+    
+
+    {/* listsTab */}
+    <View style={styles.lists}>
+    <ListTab title='Edit Profile' lefticon='person-sharp' rightIcon='chevron-forward' onPress={()=>{navigation.navigate('editProfile')}}></ListTab>
+    <ListTab title='Settings   ' lefticon='settings' rightIcon='chevron-forward' onPress={()=>{navigation.navigate('editProfile')}}></ListTab>
+     <ListTab title='Logout' lefticon='exit' onPress={handleLogout}></ListTab>
+    </View>
+      </View>
   )
 }
 
@@ -25,58 +60,37 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacingX._20,
   },
   userInfo:{
-    marginTop: spacingY._30,
+    top: verticalScale(-60),
     alignItems: 'center',
-    gap: spacingY._15,
-  },
-  avatarContainer:{
-    position: 'relative',
-    alignSelf:'center',
   },
   avatar:{
     alignSelf:'center',
     width: spacingX._135,
-    height: spacingY._135,
-    borderRadius: radius._70,
+    height: spacingY._120,
+    borderRadius: radius._100,
     backgroundColor: appColors.lightBaseGreen,
-    shadowColor: appColors.baseGreen,
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.15,
-    shadowRadius: 5,
-    elevation: 5,
-    padding: spacingX._5,
-  },
-  editIcon:{
-    position: 'absolute',
-    bottom: 5,
-    right: 8,
-    backgroundColor: appColors.white,
-    borderRadius: radius._20,
     padding: spacingX._5,
   },
   nameContainer:{
     alignItems: 'center',
-    gap: spacingY._5,
   },
-  listIcon:{
-    height: spacingY._45,
-    width: spacingY._45,
-    borderRadius: radius._20,
-    backgroundColor: appColors.baseGreen,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderCurve:'continuous'
+  lists:{
+   marginLeft: spacingX._10,
   },
-  listItem:{
-    marginBottom: spacingY._15,
+  name:{
+    fontSize: spacingY._23,
+    color: appColors.baseGreen,
+    fontWeight: 'bold',
+    fontFamily:'inter',
   },
-  accoutOptions:{
-    marginTop: spacingY._20,
+  email:{
+    fontSize: spacingY._15,
+    color: appColors.lightBaseGreen,
+    fontWeight: '500',
+    fontFamily:'inter',
   },
-  flexRow:{
-    flexDirection: 'row',
-    gap: spacingX._10,
-    alignItems: 'center',
-  },
+
+
+
 
 })
