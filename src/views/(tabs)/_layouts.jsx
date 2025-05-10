@@ -3,14 +3,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { radius, spacingX, spacingY } from '../../constants/scaling';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
 import HomeView from './home';
 import ProfileView from './myProfile';
 import Wallets from './myWallet';
 import AnalyticsView from './statistics';
 import AddExpenseView from './addExpense';
 import { appColors } from '../../constants/colors';
-import ProfileNavigator from '../../navigations/nestedNavigations';
+import ProfileNavigator from '../../navigations/profileNavigations';
+import WalletNavigator from '../../navigations/walletsNavigations';
 
 const Tab = createBottomTabNavigator();
 
@@ -82,7 +82,7 @@ const TabsNavigation = () => {
           tabBarButton: (props) => <CustomAddButton {...props} />,
         }}
       />
-      <Tab.Screen name="wallets" component={Wallets} />
+      <Tab.Screen name="wallets" component={WalletNavigator} />
       <Tab.Screen name="profile" component={ProfileNavigator} />
     </Tab.Navigator>
   );
