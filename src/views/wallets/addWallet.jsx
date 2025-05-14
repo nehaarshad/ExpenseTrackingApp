@@ -9,11 +9,13 @@ import Input from '../../components/shared/input'
 import { Dropdown } from 'react-native-element-dropdown'
 import GradientButton from '../../components/shared/gradientButton'
 import axios from 'axios'
-import Ionicons from '@expo/vector-icons/Ionicons'
+import { useAuth } from '../../hooks/useAuth'
+import FindUser from '../../utils/getUser'
 
 
 const AddWallet = ({navigation}) => {
 
+    const {user}=useAuth();
     const [loading, setLoading] = useState(false);
     const [walletName, setWalletName] = useState(null);
     const [walletType, setWalletType] = useState(null);
@@ -32,6 +34,7 @@ const AddWallet = ({navigation}) => {
         setLoading(true);
        try{
 
+        let userId;
         if(!walletName || !walletType){
             Alert.alert('Error', 'Please fill all the fields!');
             setLoading(false);
@@ -41,13 +44,18 @@ const AddWallet = ({navigation}) => {
         const data={
             walletName:walletName,
             walletType:walletType,
-            totalAmount:0,
-            Income:0,
-            Expense:0,
+            totalAmount:0.0,
+            Income:0.0,
+            Expense:0.0,
         }
 
         console.log(data);
-        await axios.post(`${apiUrl.baseUrl}/wallets.json`, data);
+        if(user && user.email){
+        
+           userId= await  FindUser(user);
+           console.log('UserId Passes:',userId);
+              }
+        await axios.post(`${apiUrl.baseUrl}/wallets/${userId}.json`, data);
          Alert.alert('Success', 'Wallet Added successfully!');
          navigation.navigate('myWallets');
       
@@ -71,8 +79,9 @@ const AddWallet = ({navigation}) => {
         <View style={styles.container}>
           <Input placeholder="Enter Wallet Name" value={walletName} onChangeText={(v)=>setWalletName(v)}></Input>
           <Dropdown
+             placeholderStyle={styles.placeholderStyle}
+             selectedTextStyle={styles.selectedTextStyle}
             style={styles.dropdown}
-            selectedTextStyle={styles.selectedTextStyle}
             data={dropdownData}
             maxHeight={300}
             labelField="label"
@@ -132,6 +141,15 @@ const styles = StyleSheet.create({
     borderRadius: radius._15,
     borderCurve: "continuous",
     paddingHorizontal: spacingX._15,
+  },
+   placeholderStyle: {
+    fontSize: spacingY._15,
+    color: '#696969'
+  },
+  selectedTextStyle: {
+    fontSize:spacingY._15,
+    color:appColors.black,
+    fontWeight:'400',
   },
  input:{
     flex:1,

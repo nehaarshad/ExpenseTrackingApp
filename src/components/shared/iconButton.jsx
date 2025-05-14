@@ -17,7 +17,7 @@ export default IconButton
 const styles = StyleSheet.create({
     button: {
      backgroundColor:appColors.neutral600,
-     borderRadius:radius._30,
+     borderRadius:radius._200,
      borderCurve:"continuous",
      padding:spacingX._5,
      width:spacingX._35,

@@ -5,9 +5,10 @@ import {
   signOut,
   updateProfile
 } from 'firebase/auth';
-import { doc } from 'firebase/firestore';
 import { auth ,db} from '../constants/firebaseConfig';
-import { setDoc } from 'firebase/firestore';
+import axios from 'axios';
+import { Alert } from 'react-native';
+import { apiUrl } from '../constants/apiUrl';
 
 export const login = async (email, password) => {
   try {
@@ -35,6 +36,8 @@ export const login = async (email, password) => {
     // await new Promise(resolve => setTimeout(resolve, 300));
     
     const userCredentials = await signInWithEmailAndPassword(auth, emailStr, passwordStr);
+
+
     console.log('Login successful');
     return userCredentials.user;
   } catch (e) {
@@ -76,16 +79,24 @@ export const register = async (email, password, userName) => {
     if (!auth) throw new Error("Firebase Auth not initialized properly");
     
     const userCredentials = await createUserWithEmailAndPassword(auth, emailStr, passwordStr);
-    await setDoc(doc(db, 'users', userCredentials.user.uid), {
-      uid: userCredentials.user.uid,
-      email: emailStr,
-      userName: userName ? String(userName).trim() : null,
-      createdAt: new Date().toISOString(),
-    });
+    // await setDoc(doc(db, 'users', userCredentials.user.uid), {
+    //   uid: userCredentials.user.uid,
+    //   email: emailStr,
+    //   userName: userName ? String(userName).trim() : null,
+    //   createdAt: new Date().toISOString(),
+    // });
     const user = userCredentials.user;
+    
+        const data={
+            username:userName,
+            Email:emailStr,
+            password:passwordStr,
+        }
 
-    // Update user profile with displayName if provided
-    if (userName) {
+    const response = await axios.post(`${apiUrl.baseUrl}/users.json`, data);
+    console.log('User data saved:', response.data);
+    Alert.alert('Success', 'Registeration successfully!');
+   if (userName) {
       await updateProfile(user, { displayName: String(userName).trim() });
     }
     console.log(`User registered with: ${user.email}`);

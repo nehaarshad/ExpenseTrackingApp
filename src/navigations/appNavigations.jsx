@@ -33,8 +33,10 @@ const AppNavigator = () => {
           // No user is signed in
           <>
             <Stack.Screen name="welcome" component={WelcomeView} />
+            {/* <Stack.Screen name="home" component={HomeView} /> */}
             <Stack.Screen name="login" component={LoginView} />
             <Stack.Screen name="register" component={RegisterView} />
+
           </>
         )}
       </Stack.Navigator>

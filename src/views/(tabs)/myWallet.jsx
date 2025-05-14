@@ -1,15 +1,18 @@
 import { StyleSheet, Text, TouchableOpacity, View,ActivityIndicator,ScrollView,Alert } from 'react-native'
 import HeaderImage  from '../../components/shared/headerImage'
 import React, { useEffect, useState } from 'react'
+import FindUser from '../../utils/getUser'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { appColors } from '../../constants/colors'
 import { apiUrl } from '../../constants/apiUrl'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import axios from 'axios'
 import { radius, spacingX, spacingY } from '../../constants/scaling'
+import { useAuth } from '../../hooks/useAuth'
 
 const Wallets = ({navigation}) => {
 
+  const {user}=useAuth();
   const [wallets,setWallets]=useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -28,9 +31,15 @@ const Wallets = ({navigation}) => {
   const deleteWallet=async(walletId)=>{
     setLoading(true);
     try {
-      await axios.delete(`${apiUrl.baseUrl}/wallets/${walletId}.json`);
+      let userId=null;
+       if(user && user.email){
+            userId= await  FindUser(user);
+            console.log('UserId Passes:',userId);
+    }
+      await axios.delete(`${apiUrl.baseUrl}/wallets/${userId}/${walletId}.json`);
+       await  fetchWallets();
       Alert.alert('Success', 'Wallet deleted successfully!');
-      fetchWallets();
+    
     } catch (error) {
       console.error(error);
       Alert.alert('Error', 'Unable to delete wallet, try again later!');
@@ -43,10 +52,17 @@ const Wallets = ({navigation}) => {
 
     setLoading(true);
     try {
-      const response=await axios.get(`${apiUrl.baseUrl}/wallets.json`);
-      if(response.data){
-        const walletsArray=[];
+      let userId=null;
+       if(user && user.email){
+            userId= await  FindUser(user);
+            console.log('UserId Passes:',userId);
+    }
+       const walletsArray=[];
 
+      const response=await axios.get(`${apiUrl.baseUrl}/wallets/${userId}.json`);
+      console.log('Wallets:',response.data);
+      if(response.data){
+      
          Object.keys(response.data).forEach(key => {
           const wallet = response.data[key];
 
@@ -82,6 +98,10 @@ const Wallets = ({navigation}) => {
 
       setWallets(walletsArray);
       console.log(wallets);
+      
+      }
+      else if(response.data === null){
+        setWallets([]);
       }
     } catch (error) {
       console.error(error);
@@ -91,7 +111,7 @@ const Wallets = ({navigation}) => {
   }
 
   useEffect(()=>{
-    fetchWallets();
+    fetchWallets(); 
   },[]);
 
   return (
@@ -118,28 +138,31 @@ const Wallets = ({navigation}) => {
         <ScrollView style={styles.scrollView}>
           {wallets.map((wallit, index) => (
             <View key={index} style={styles.wishlistCard}>
- 
+             <TouchableOpacity  onPress={() => navigation.navigate('editWallets',{'id':wallit.id})}>
+
               <View style={styles.topBar}>
               <View style={styles.cartTitle}>
               <MaterialCommunityIcons name={wallit.icon} size={30} color={appColors.baseGreen} />
               <Text style={styles.walletname}>{wallit.name}</Text>
+
               </View>
                 <TouchableOpacity onPress={() => handleDeleteWallet(wallit.id)}>
-                  <MaterialCommunityIcons name='delete' size={30} color={appColors.red} />
+                  <MaterialCommunityIcons name='delete' size={30} color={appColors.lightBaseGreen} />
                 </TouchableOpacity>
               </View>
 
-              <View style={styles.bottomBar}>
+                <View style={styles.bottomBar}>
                 <Text style={styles.text}>Total Amount:</Text>
                 <Text style={styles.number}>{wallit.totalAmount}</Text>
                 </View>
-            
+
+             </TouchableOpacity>
             
             </View>
           ))}
         </ScrollView>
       ) : (
-        <Text style={styles.noDataText}>No data available</Text>
+        <Text style={styles.noDataText}>No Wallets Yet</Text>
       )}
 
     </View>
@@ -169,7 +192,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacingX._15,
     borderRadius: radius._40,
     borderColor: appColors.baseGreen,
-    borderWidth: 1.5,
+    borderWidth: 2,
     backgroundColor: appColors.background,
     width:spacingX._100,
   },
@@ -217,7 +240,7 @@ const styles = StyleSheet.create({
     gap: spacingX._3,
   },
   text: {
-    marginLeft: spacingX._50,
+    marginLeft: spacingX._40,
     fontSize: spacingY._15,
     color: appColors.buttonGradient.start,
     fontWeight:'600',
@@ -228,9 +251,9 @@ const styles = StyleSheet.create({
   },
   noDataText: {
     textAlign: 'center',
-    marginTop: spacingY._20,
+    marginTop: spacingY._100,
     fontSize: spacingY._18,
-    color: appColors.black,
+    color: appColors.baseGreen,
   },
 
 })

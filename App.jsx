@@ -3,6 +3,8 @@ import AppNavigator from './src/navigations/appNavigations';
 import React, { useState } from 'react';
 import SplashView from './src/views/splashView';
 import { useEffect } from 'react';
+import { useExpense } from './src/hooks/useExpenses';
+import { ExpenseProvider } from './src/context/expenseContext';
 
 const App = () => {
   const [appIsReady, setAppIsReady] = useState(false);
@@ -22,7 +24,9 @@ const App = () => {
 
   return (
     <AuthProvider>
-      <AppNavigator />
+    <ExpenseProvider>
+        <AppNavigator />
+    </ExpenseProvider>
     </AuthProvider>
   );
 };

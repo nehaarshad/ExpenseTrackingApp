@@ -4,8 +4,6 @@ import { View, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { radius, spacingX, spacingY } from '../../constants/scaling';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import HomeView from './home';
-import ProfileView from './myProfile';
-import Wallets from './myWallet';
 import AnalyticsView from './statistics';
 import AddExpenseView from './addExpense';
 import { appColors } from '../../constants/colors';

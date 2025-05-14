@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
-  // Enhanced login function with error handling
+  
   const signIn = async (email, password) => {
     setAuthError(null);
     try {
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Enhanced register function with proper parameter passing
+  
   const signUp = async (email, password, userName) => {
     setAuthError(null);
     try {

@@ -21,7 +21,7 @@ const  WelcomeView = ({navigation}) => {
 
      {/* loginButton */}
      <View style={styles.navView}>
-        <Text style={styles.text}>Already Have Account? </Text>
+        <Text style={styles.text}>Already have an account? </Text>
         <TextButton 
           text='Login' 
           onPress={() => navigation.navigate('login')}

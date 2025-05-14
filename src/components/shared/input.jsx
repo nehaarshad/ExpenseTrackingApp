@@ -6,6 +6,7 @@ import { radius, spacingX,spacingY } from '../../constants/scaling';
 const Input = ({ 
   placeholder, 
   icon,
+  rightIcon,
   value, 
   onChangeText, 
   secureTextEntry,
@@ -28,6 +29,7 @@ const Input = ({
         editable={!disabled}
         {...props}
       />
+      {rightIcon && rightIcon}
     </View>
   );
 };

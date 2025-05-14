@@ -58,7 +58,6 @@ const RegisterView = ({ navigation }) => {
       
       await signUp(email, password,name);
       Alert.alert('Registration Successful', 'Welcome!');
-      navigation.navigate('home');
     } catch (error) {
       console.error('Registration error:', error);
       Alert.alert('Registration Failed', error.message || 'An error occurred');
@@ -72,7 +71,7 @@ const RegisterView = ({ navigation }) => {
       {/* BackButton */}
       <IconButton name="chevron-back-outline" 
       size={spacingY._20} color={appColors.baseGreen} 
-      onPress={()=>navigation.navigate('welcome')}/>
+      onPress={()=>navigation.navigate('tabs')}/>
         
         {/* welcomeText */}
         
