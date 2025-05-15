@@ -178,6 +178,7 @@ export const ExpenseProvider = ({ children }) => {
         description: expenseDescription,
         amount: transactionAmount,
         date: dateTime,
+        walletID:walletId,
         type: expenseType,
       };
 

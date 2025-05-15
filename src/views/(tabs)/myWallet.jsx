@@ -7,12 +7,14 @@ import { appColors } from '../../constants/colors'
 import { apiUrl } from '../../constants/apiUrl'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import axios from 'axios'
+import { useExpense } from '../../hooks/useExpenses'
 import { radius, spacingX, spacingY } from '../../constants/scaling'
 import { useAuth } from '../../hooks/useAuth'
 
 const Wallets = ({navigation}) => {
 
   const {user}=useAuth();
+  const {getData}=useExpense();
   const [wallets,setWallets]=useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -36,8 +38,33 @@ const Wallets = ({navigation}) => {
             userId= await  FindUser(user);
             console.log('UserId Passes:',userId);
     }
+    const wallet= await axios.get(`${apiUrl.baseUrl}/wallets/${userId}/${walletId}.json`);
+    console.log('deleted Wallet Data:'.wallet.data)
+
+    //cardUpdation
+      const response = await axios.get(`${apiUrl.baseUrl}/userCard/${userId}.json`);
+          const data = response.data;
+          data.totalAmount=data.totalAmount-wallet.totalAmount;
+          data.expenses=data.expenses-wallet.Expense;
+          data.income=data.income-wallet.Income;
+          await axios.put(`${apiUrl.baseUrl}/userCard/${userId}.json`,data);
+
+    //transactions
+    const transactions = await axios.get(`${apiUrl.baseUrl}/transactions/${userId}.json`);    
+    const res=transactions.data;
+    console.log('transactions..',res);
+  for (const key of Object.keys(res)) {
+  const index = res[key]; 
+  if (walletId === index.walletID) {
+    await axios.delete(`${apiUrl.baseUrl}/transactions/${userId}/${key}.json`);
+    console.log('deleted wallets,',index);
+  }
+}  
+     
+       
       await axios.delete(`${apiUrl.baseUrl}/wallets/${userId}/${walletId}.json`);
        await  fetchWallets();
+       await getData();
       Alert.alert('Success', 'Wallet deleted successfully!');
     
     } catch (error) {
