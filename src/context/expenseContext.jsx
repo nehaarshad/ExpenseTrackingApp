@@ -39,13 +39,17 @@ export const ExpenseProvider = ({ children }) => {
       }
       
       const response = await axios.get(`${apiUrl.baseUrl}/userCard/${userId}.json`);
-      const data = response.data;
-        console.log('userCard', data);
+      const userCardData = response.data;
+        console.log('getUserCardInfo  userCard', userCardData);
+        Object.keys(userCardData).forEach(key=>{
+        const data=userCardData[key];
+            console.log('in Object  ', data);
         setTotalAmount(data.totalAmount);
         setTotalExpense(data.expenses);
         setTotalIncome(data.income);
         setLoading(false);
-      
+        console.log(' userCard Data to display', totalAmount,totalExpense,totalIncome);
+        })
 
     } catch (e) {
       console.log('error', e);
@@ -156,19 +160,24 @@ export const ExpenseProvider = ({ children }) => {
         await axios.post(`${apiUrl.baseUrl}/userCard/${userId}.json`, HomeViewCardData);
       } 
       else {
-        // Object.keys(cardData).forEach(key => {
-        //   const card = cardData[key];
-        //   console.log(card);
-          if (expenseType === "Expense") {
-            cardData.totalAmount = cardData.totalAmount - transactionAmount;
-            cardData.expenses = cardData.expenses + transactionAmount;
-          } else {
-            cardData.totalAmount = cardData.totalAmount + transactionAmount;
-            cardData.income = cardData.income + transactionAmount;
-          }
-        // });
+        const cardKeys = Object.keys(cardData);
+  for (const key of cardKeys) {
+    const card = cardData[key];
+    console.log('in Object', card);
+    
+    if (expenseType === "Expense") {
+      card.totalAmount = card.totalAmount - transactionAmount;
+      card.expenses = card.expenses + transactionAmount;
+    } else {
+      card.totalAmount = card.totalAmount + transactionAmount;
+      card.income = card.income + transactionAmount;
+    }
+    
+    console.log('in Object to update card', card);
+    await axios.put(`${apiUrl.baseUrl}/userCard/${userId}/${key}.json`, card);
+  }
         
-        await axios.put(`${apiUrl.baseUrl}/userCard/${userId}.json`, cardData);
+  
       }
 
       // Add User Transaction for home screen Tiles

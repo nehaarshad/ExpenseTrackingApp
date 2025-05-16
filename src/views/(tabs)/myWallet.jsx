@@ -39,15 +39,25 @@ const Wallets = ({navigation}) => {
             console.log('UserId Passes:',userId);
     }
     const wallet= await axios.get(`${apiUrl.baseUrl}/wallets/${userId}/${walletId}.json`);
-    console.log('deleted Wallet Data:'.wallet.data)
+    console.log('deleted Wallet Data:',wallet.data)
 
     //cardUpdation
       const response = await axios.get(`${apiUrl.baseUrl}/userCard/${userId}.json`);
-          const data = response.data;
-          data.totalAmount=data.totalAmount-wallet.totalAmount;
-          data.expenses=data.expenses-wallet.Expense;
-          data.income=data.income-wallet.Income;
-          await axios.put(`${apiUrl.baseUrl}/userCard/${userId}.json`,data);
+          const UserCardData = response.data;
+          console.log('userCard Get:',UserCardData);
+
+            const cardKeys = Object.keys(UserCardData);
+     for (const key of cardKeys) {
+    const card = UserCardData[key];
+    console.log('in Object to delete wallet', card);
+    
+      card.totalAmount = card.totalAmount - wallet.data.totalAmount;
+      card.expenses = card.expenses - wallet.data.Expense;
+      card.income = card.income - wallet.data.Income;
+    
+    console.log('userCard Post', card);
+    await axios.put(`${apiUrl.baseUrl}/userCard/${userId}/${key}.json`, card);
+  }
 
     //transactions
     const transactions = await axios.get(`${apiUrl.baseUrl}/transactions/${userId}.json`);    

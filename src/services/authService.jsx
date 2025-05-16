@@ -32,9 +32,6 @@ export const login = async (email, password) => {
     console.log('Auth object:', auth);
     if (!auth) throw new Error("Auth not initialized");
     
-    // // Add slight delay before the Firebase call
-    // await new Promise(resolve => setTimeout(resolve, 300));
-    
     const userCredentials = await signInWithEmailAndPassword(auth, emailStr, passwordStr);
 
 
