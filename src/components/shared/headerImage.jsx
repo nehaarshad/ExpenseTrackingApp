@@ -33,7 +33,7 @@ const HeaderImage = ({ title, text, username,view=true, localImage}) => {
               {localImage ? (
                         <Image source={{uri:localImage}} style={styles.avatarImage} />
                       ) : (
-                        <Ionicons name='person' size={spacingY._50} color={appColors.white} />
+                        <Ionicons name='person' size={spacingY._30} color={appColors.white} />
                       )}
         </View>
         </View>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginHorizontal: spacingX._25,
     marginTop: spacingY._80,
-    gap:spacingX._100
+    gap:spacingX._135
   },
   textView: {
     flexDirection: 'column',

@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     borderRadius: radius._100,
     backgroundColor: appColors.lightBaseGreen,
     justifyContent: 'center',
+    alignItems:'center',
     overflow: 'hidden',
   },
     avatarImage: {
