@@ -1,12 +1,12 @@
-import { StyleSheet, ImageBackground, View, TouchableOpacity, Text } from 'react-native'
+import { StyleSheet, ImageBackground, View, TouchableOpacity, Text ,Image } from 'react-native'
 import React from 'react'
 import headerImage from '../../assets/images/header.png'
-import { spacingX, spacingY } from '../../constants/scaling'
+import { spacingX, spacingY ,radius} from '../../constants/scaling'
 import { Ionicons } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import { appColors } from '../../constants/colors'
 
-const HeaderImage = ({ title, text, username,view=true,}) => {
+const HeaderImage = ({ title, text, username,view=true, localImage}) => {
   const navigation = useNavigation();
 
   return (
@@ -22,12 +22,22 @@ const HeaderImage = ({ title, text, username,view=true,}) => {
 
       </View>
       ):(
-         <View style={styles.dashboard}>
-        
+        <View style={styles.dashboardView}>
+        {/* text */}
+        <View style={styles.textView}>
         <Text style={styles.text}>{text}</Text>
         <Text style={styles.user}>{username}</Text>
-
-      </View>
+         </View>
+        {/* image */}
+         <View style={styles.avatar}>
+              {localImage ? (
+                        <Image source={{uri:localImage}} style={styles.avatarImage} />
+                      ) : (
+                        <Ionicons name='person' size={spacingY._50} color={appColors.white} />
+                      )}
+        </View>
+        </View>
+      
       )}
      
     </ImageBackground>
@@ -58,11 +68,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: appColors.white,
   },
-  dashboard: {
-    flexDirection: 'column',
+  dashboardView: {
+    flexDirection: 'row',
     position: 'relative',
     marginHorizontal: spacingX._25,
     marginTop: spacingY._80,
+    gap:spacingX._100
+  },
+  textView: {
+    flexDirection: 'column',
+    position: 'relative',
+
   },
   text: {
     fontSize: spacingY._15,
@@ -75,6 +91,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: appColors.white,
   },
+    avatar:{
+      width: spacingX._60,
+      height: spacingY._50,
+      borderRadius: radius._100,
+      backgroundColor: appColors.lightBaseGreen,
+      justifyContent: 'center',
+      alignItems:'center',
+      overflow: 'hidden',
+    },
+      avatarImage: {
+      width: '100%',
+      height: '100%',
+      borderRadius: radius._100,
+    },
   
 
 })

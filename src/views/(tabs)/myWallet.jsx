@@ -63,13 +63,17 @@ const Wallets = ({navigation}) => {
     const transactions = await axios.get(`${apiUrl.baseUrl}/transactions/${userId}.json`);    
     const res=transactions.data;
     console.log('transactions..',res);
-  for (const key of Object.keys(res)) {
+    if(res){
+        for (const key of Object.keys(res)) {
   const index = res[key]; 
   if (walletId === index.walletID) {
     await axios.delete(`${apiUrl.baseUrl}/transactions/${userId}/${key}.json`);
-    console.log('deleted wallets,',index);
+    console.log('deleted Transaction of wallet,',index);
   }
-}  
+} 
+
+    }
+ 
      
        
       await axios.delete(`${apiUrl.baseUrl}/wallets/${userId}/${walletId}.json`);

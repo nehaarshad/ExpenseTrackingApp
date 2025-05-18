@@ -10,7 +10,6 @@ const App = () => {
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
-    // Simulate loading (replace with your actual loading logic)
     const timer = setTimeout(() => {
       setAppIsReady(true);
     }, 3000);

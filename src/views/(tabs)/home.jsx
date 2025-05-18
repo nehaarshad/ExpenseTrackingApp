@@ -17,8 +17,8 @@ import { useExpense } from '../../hooks/useExpenses'
 //getUser transaction for tile
 //get userCard price Api
 const HomeView = ({}) => {
-  const {user}=useAuth();
-
+  const {user,localImage}=useAuth();
+ console.log('[ProfileView] Current localImage:', localImage);
    const { 
     totalAmount, 
     totalIncome, 
@@ -29,7 +29,7 @@ const HomeView = ({}) => {
     
   return (
     <View style={{flex:1,backgroundColor:appColors.white}}>
-      <HeaderImage view={false} text='Welcome Back,' username={user.displayName} ></HeaderImage>
+      <HeaderImage view={false} text='Welcome Back,' username={user.displayName} localImage={localImage}></HeaderImage>
 
       {/* Card */}
         <CardView total={totalAmount} in={totalIncome} ex={totalExpense}></CardView>
